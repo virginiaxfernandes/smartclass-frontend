@@ -60,13 +60,15 @@ A modelagem foi desenvolvida com base nos seguintes diagramas UML:
 <br><br>
   
 - **Diagrama de Sequência** – fluxo de retirada e devolução de chaves
+<img width="701" height="330" alt="image" src="https://github.com/user-attachments/assets/bf06b8cb-493f-427f-b02b-8140d847b66f" />
+
 
 <br><br>
 
 - **Diagrama de Atividade** – ciclo de vida de uma movimentação
 <img width="1087" height="631" alt="image" src="https://github.com/user-attachments/assets/3dce3ee4-17c0-498b-8ddc-bfc22565e8f4" />
 
-<br>
+<br><br>
 
 ## Protótipo Arduino / IoT 
 O hardware foi desenvolvido com ESP32 (C++) integrado a sensores RFID, responsável por:
@@ -76,12 +78,14 @@ O hardware foi desenvolvido com ESP32 (C++) integrado a sensores RFID, responsá
 - Acionamento de buzzer para alertas sonoros
 - Comunicação em tempo real com o sistema web
 
+**Tinkercad:** 
+
 <br>
 
 ## Front-end
 **Tecnologias:** React.js (PWA) + Tailwind CSS v4 + Vite
 
-**Deploy:** [ smartclass-frontend-self.vercel.app](smartclass-frontend-self.vercel.app)
+**Deploy:** 
 
 <br>
 
@@ -191,7 +195,7 @@ Avaliamos a estabilidade e o tempo de resposta da API do SmartClass ao processar
 
 <br>
 
-**Teste de Carga (Load Test)** 
+### Teste de Carga (Load Test)
 
 -	Alvo (URL): smartclass-backend-production.up.railway.app
 -	Endpoint: GET /api/movements?limit=50&offset=0
@@ -200,6 +204,75 @@ Avaliamos a estabilidade e o tempo de resposta da API do SmartClass ao processar
 -	Tempo de Entrada (Ramp-up): 10 segundos
 -	Repetições por Usuário (Loop Count): 4
 -	Carga Total Projetada: 60 requisições
+
+<br>
+
+**Resultados Obtidos**
+
+Após a execução do cenário, o painel Summary Report consolidou as seguintes métricas de desempenho:
+
+| **Métrica** | **Resultado** | **Análise** | 
+|-------------|---------------|-------------|
+| Total de Amostras | 60 | Todas as requisições foram executadas | 
+| Taxa de Erro (%) | 0.00% | O servidor processou todas as chamadas com sucesso (HTTP 200 OK), sem rejeições ou falhas de conexão |
+| Tempo Médio (Average) | 218 ms | Execelente. Indica que a aplicação responde de forma rápida e responsiva para o usuário final | 
+| Tempo Mínimo (Min) | 156ms | Reflete o tempo da resposta mais rápida registrada |
+| Tempo Máximo (Max) | 1093ms | Um pico isolado aceitável (pouco mais de 1 segundo), comum em ambientes de nuvem devido à alocação de recursos do *Load Balancer* | 
+| Vazão (Throughtput) | 6.0/seg | O sistema conseguiu entregar 6 requisições resolvidas por segundo de forma constante |
+
+<br>
+
+**Conclusão Técnica** 
+
+O teste de carga foi um sucesso absoluto. A infraestrutura backend hospedada no Railway e a modelagem do banco de dados demonstraram alta resiliência e otimização para este volume de requisições.
+
+<br>
+
+### Teste de Stress (Segurança e Rate Limiting) 
+
+Avaliamos a resiliência da infraestrutura de segurança da API do SmartClass sob uma simulação de ataque de força bruta, validando especificamente o funcionamento do middleware de limitação de tráfego (express-rate-limit) configurado para a rota de autenticação.
+
+-	Alvo (URL): smartclass-backend-production.up.railway.app
+-	Endpoint: POST /api/auth/login
+-	Cabeçalhos: Content-Type: application/json
+-	Carga Útil (Body): Credenciais estáticas (marina.souza@senac.br / senha123) -
+-	Usuários Simultâneos (Threads): 30
+-	Tempo de Entrada (Ramp-up): 2 segundos
+-	Repetições por Usuário (Loop Count): 1
+
+<br>
+
+**Resultados Obtidos** 
+
+Após a execução da simulação de ataque, o painel Summary Report apresentou as seguintes métricas consolidadas:
+
+| **Métrica** | **Resultado** | **Análise** | 
+|-------------|---------------|-------------|
+| Total de Amostras | 30 | O JMeter disparou todas as 30 tentativas planeadas em 2 segundos | 
+| Taxa de Erro (%) | 100.00% | Resultado esperado e positivo. O servidor rejeitou corretamente todas as tentativas, protegendo o acesso ao sistema | 
+| Tempo médio (Average) | 359 ms | Desempenho excelente, considerando que a rota executa o algoritmo pesado de criptografia bcrypt antes do bloqueio | 
+| Tempo Mínimo (Min) | 313 ms | Tempo da resposta mais rápida durante o pico | 
+| Tempo Máximo (Max) | 665 ms | O maior tempo de espera registrado não ultrapassou 1 segundo |
+| Vazão (Throughtput) | 13.3/seg | O servidor processou cerca de 13 tentativas de login por segundo sem falhas de infraestrutura | 
+
+<br>
+
+**Conclusão Técnica**
+
+O Teste de Stress atesta o sucesso absoluto da arquitetura de segurança implementada. O mecanismo de proteção contra força bruta (loginLimiter) funcionou com total precisão em ambiente de produção, identificando a anomalia de tráfego e cortando o acesso do atacante (neste caso, o próprio JMeter) exatamente após o limite estabelecido, poupando os recursos de processamento e mantendo a estabilidade global da plataforma SmartClass.
+
+<br>
+
+**Prints das configurações e resultados obtidos no JMeter Apache:** 
+
+[Teste de Carga](https://i.imgur.com/xUN55RW.png)
+
+[Teste de Stress](https://i.imgur.com/pklpGVO.png)
+
+
+
+
+
 
 
 
