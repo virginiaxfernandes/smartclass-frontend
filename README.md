@@ -72,7 +72,7 @@ A modelagem foi desenvolvida com base nos seguintes diagramas UML:
 
 **Fluxograma**
 
-``mermaid
+```mermaid
 flowchart TD
     A[Projeto Integrador: SIDAA] --> B[Modelagem do Sistema]
     A --> C[Protótipo Arduino / ESP32]
@@ -80,18 +80,25 @@ flowchart TD
     A --> G[Back-end]
     A --> H[Testes]
     A --> R[Repositório GitHub]
+
     B --> B1[Diagrama de Casos de Uso]
     B --> B2[Diagrama de Classes]
+
     C --> C1[ESP32 e Leitor RFID]
+
     D --> D1[React]
     D --> D2[Tailwind CSS]
+
     G --> G1[Node.js / Express]
     G --> G2[MySQL]
+
     H --> H1[JMeter - Carga e Stress]
+
     R --> R1[README - conecta todos os artefatos]
+
     style A fill:#4F46E5,stroke:#312E81,stroke-width:2px,color:#FFF
     style R fill:#059669,stroke:#064E3B,stroke-width:2px,color:#FFF
-    style R1 fill:#059669,stroke:#064E3B,stroke-width:2px,color:#FFF``
+    style R1 fill:#059669,stroke:#064E3B,stroke-width:2px,color:#FFF
 
     <br>
 
