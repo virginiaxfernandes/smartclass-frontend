@@ -111,7 +111,7 @@ O hardware foi desenvolvido com ESP32 (C++) integrado a sensores RFID, responsá
 - Acionamento de buzzer para alertas sonoros
 - Comunicação em tempo real com o sistema web
 
-**Tinkercad:** 
+**Tinkercad:** https://www.tinkercad.com/things/1VCKH2d8xiJ/editel?sharecode=XsntkTG0_PknJCRK6bLJKQKCnTW5SdsYblOsciJ7Bec
 
 <br>
 
